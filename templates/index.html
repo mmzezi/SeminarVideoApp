@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Processor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div id="header">
+        <p>Welcome, {{ username }}!</p>
+        <a href="{{ url_for('logout') }}" id="logout-button">Logout</a>
+    </div>
+
+    <div id="content-box">  <!-- This box centers everything -->
+        <h1>Video Processor</h1>
+
+        <!-- File Upload Form -->
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="file-input" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+        <div id="message"></div>
+
+        <!-- Processing Options -->
+        <div id="process-options" style="display:none;">
+            <h2>Select Processing Options</h2>
+            <label for="codec">Encoding Method:</label>
+            <select id="codec">
+                <option value="libx265">x265</option>
+                <option value="libvpx-vp9">VP9</option>
+                <option value="libx264">x264</option>
+            </select>
+            <br><br>
+            <label for="resolution">Resolution:</label>
+            <select id="resolution">
+                <option value="-2:480">480p</option>
+                <option value="-2:720">720p</option>
+                <option value="-2:1080">1080p</option>
+            </select>
+            <br><br>
+            <label for="volume">Audio Boost (dB):</label>
+            <input type="number" id="volume" value="5" min="0" max="20">
+            <br><br>
+            <label for="bitrate">Bitrate (kb/s):</label>
+            <input type="number" id="bitrate" value="1000" min="100" max="10000">
+            <br><br>
+            <label for="crf">CRF:</label>
+            <input type="number" id="crf" value="28" min="0" max="51">
+            <br><br>
+            <input type="checkbox" id="strip-metadata">
+            <label for="strip-metadata">Strip Metadata</label>
+            <br><br>
+            <button id="process-button">Process Video</button>
+        </div>
+
+        <!-- YouTube Download Form -->
+        <div id="youtube-download">
+            <h2>Download from YouTube</h2>
+            <form id="youtube-form">
+                <label for="youtube-url">YouTube URL:</label>
+                <input type="url" id="youtube-url" required placeholder="Enter YouTube link">
+                <br><br>
+                <label for="format">Format:</label>
+                <select id="format">
+                    <option value="video">Video</option>
+                    <option value="audio">Audio</option>
+                </select>
+                <br><br>
+                <button type="submit">Download</button>
+            </form>
+            <div id="youtube-message"></div>
+        </div>
+    </div>
+
+    <script>
+        // File upload and processing
+        document.getElementById('upload-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('file-input');
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (response.ok) {
+                const videoId = result.video_id;
+                document.getElementById('message').innerHTML = `<p>Upload successful! Video ID: ${videoId}</p>`;
+                document.getElementById('process-options').style.display = 'block';
+                setupProcessButton(videoId);
+            } else {
+                document.getElementById('message').innerHTML = `<p>Error: ${result.error}</p>`;
+            }
+        });
+
+        function setupProcessButton(videoId) {
+            document.getElementById('process-button').onclick = async function() {
+                const codec = document.getElementById('codec').value;
+                const resolution = document.getElementById('resolution').value;
+                const volume = document.getElementById('volume').value;
+                const bitrate = document.getElementById('bitrate').value;
+                const crf = document.getElementById('crf').value;
+                const stripMetadata = document.getElementById('strip-metadata').checked;
+
+                const response = await fetch(`/process/${videoId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ codec, resolution, volume, bitrate, crf, strip_metadata: stripMetadata })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    const downloadLink = `/download/${videoId}`;
+                    document.getElementById('message').innerHTML += `<p>Processing complete! <a href="${downloadLink}">Download processed video</a></p>`;
+                } else {
+                    document.getElementById('message').innerHTML += `<p>Error: ${result.error}</p>`;
+                }
+            };
+        }
+
+        // YouTube download
+        document.getElementById('youtube-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const url = document.getElementById('youtube-url').value;
+            const format = document.getElementById('format').value;
+
+            const response = await fetch('/youtube_download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url, format })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                const downloadLink = result.download_link;
+                document.getElementById('youtube-message').innerHTML = `<p>Download ready! <a href="${downloadLink}">Download ${format}</a></p>`;
+            } else {
+                document.getElementById('youtube-message').innerHTML = `<p>Error: ${result.message}</p>`;
+            }
+        });
+    </script>
+</body>
+<footer>
+    <p>&copy; "The greatest freedom is the freedom not to get involved." </p>
+</footer>
+</html>

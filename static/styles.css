@@ -1,0 +1,160 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #CFFF04;
+    background-image: url('shapes.png');
+    background-repeat: repeat;
+    color: #CFFF04;
+}
+
+h1 {
+    color: #ff00ff;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input[type="file"] {
+    margin-right: 10px;
+}
+
+button {
+    padding: 5px 10px;
+}
+
+#message {
+    margin-top: 20px;
+    color: #ff00ff;
+}
+
+body {
+    font-size: 18px;
+}
+
+h1, h2 {
+    font-size: 40px;
+}
+
+.content {
+    font-size: 20px;
+}
+
+/* Style for buttons */
+button {
+    background-color: #CFFF04; /* Neon yellow-green */
+    color: black; /* High contrast text */
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+/* Hover effect */
+button:hover {
+    background-color: #B3E703; /* Slightly darker shade */
+    transform: scale(1.05);
+}
+
+#logout-button {
+    background-color: red;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#logout-button:hover {
+    background-color: darkred;
+    transform: scale(1.05);
+}
+
+/* Style for the container */
+/* Centering the main content in a transparent black box */
+#content-box {
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    padding: 30px;
+    border-radius: 10px;
+    width: 45%;
+    max-width: 600px;
+    margin: 50px auto; /* Centers horizontally */
+    text-align: center; /* Centers content inside */
+    color: white; /* Ensures text is readable */
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: yellow;
+    padding: 20px;
+    width: 50%;
+    max-width: 600px; /* Ensures consistency */
+    margin: 0 auto; /* Centers it */
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between; /* Ensures elements are spaced properly */
+    align-items: center;
+    font-size: 32px;
+    font-weight: bolder;
+}
+
+/* Center the text */
+.container h1, .container p, .container label, .container select, .container input, .container button {
+    color: white;
+}
+
+
+/* LOGIN PROMPT */
+#login-container {
+    background: rgba(0, 0, 0, 0.7); /* Same transparency as other boxes */
+    width: 50%;
+    max-width: 400px;
+    margin: 100px auto; /* Centers vertically and horizontally */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#login-container h2 {
+    color: #CFFF04;
+    margin-bottom: 15px;
+}
+
+#login-container input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#login-container button {
+    background-color: #CFFF04;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#login-container button:hover {
+    background-color: #a8db00;
+}
+
