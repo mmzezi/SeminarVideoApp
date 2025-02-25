@@ -269,4 +269,3 @@ Odjavi uporabnika, počisti sejo.
 
 -   **302 Found** – Redirects to the login page.
 </details>
-
